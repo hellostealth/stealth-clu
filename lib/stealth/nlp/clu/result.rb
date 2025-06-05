@@ -86,6 +86,7 @@ module Stealth
           parsed_result&.dig('result', 'prediction', 'entities')
         end
 
+        # https://learn.microsoft.com/en-us/azure/ai-services/language-service/named-entity-recognition/concepts/entity-resolutions
         def entities
           return {} if raw_entities.blank?
           _entities = {}
@@ -117,7 +118,6 @@ module Stealth
 
           _entities
         end
-
 
         # def sentiment_score
         #   parsed_result&.dig('prediction', 'sentiment', 'score')
