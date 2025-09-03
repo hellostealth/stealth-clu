@@ -95,25 +95,8 @@ module Stealth
             category = entity["category"]
             mapped_category = ENTITY_MAP[category] || category
 
-            # List entities
-            list_key = entity["extraInformation"]&.find { |info| info["extraInformationKind"] == "ListKey" }&.dig("key")
-            # Standard entities
-            resolution_values = entity["resolutions"]&.map { |res| res["value"] }&.compact
-            # Fallback to raw user input that matched the entity
-            text_value = entity["text"]
-
-            # Choose final value array in priority: ListKey > Resolutions > Text
-            values =
-              if list_key
-                [list_key]
-              elsif resolution_values&.any?
-                resolution_values
-              else
-                [text_value]
-              end
-
             _entities[mapped_category.to_sym] ||= []
-            _entities[mapped_category.to_sym].concat(values)
+            _entities[mapped_category.to_sym] << entity
           end
 
           _entities
