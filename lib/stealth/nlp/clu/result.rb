@@ -5,13 +5,13 @@ module Stealth
     module Clu
       class Result < Stealth::Nlp::Result
 
+        # https://learn.microsoft.com/en-us/azure/ai-services/language-service/conversational-language-understanding/prebuilt-component-reference
         ENTITY_MAP = {
           'money' => :currency, 'number' => :number, 'email' => :email,
-          'percentage' => :percentage, 'Calendar.Duration' => :duration,
-          'geographyV2' => :geo, 'age' => :age, 'phonenumber' => :phone,
-          'ordinalV2' => :ordinal, 'url' => :url, 'dimension' => :dimension,
-          'temperature' => :temp, 'keyPhrase' => :key_phrase, 'name' => :name,
-          'datetimeV2' => :datetime
+          'percentage' => :percentage, 'geographyV2' => :geo, 'age' => :age,
+          'phonenumber' => :phone, 'ordinalV2' => :ordinal, 'url' => :url,
+          'dimension' => :dimension, 'temperature' => :temp, 'keyPhrase' => :key_phrase,
+          'personName' => :name, 'datetimeV2' => :datetime
         }
 
         def initialize(result:)

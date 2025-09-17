@@ -69,4 +69,4 @@ module Stealth
 end
 
 ENTITY_TYPES = %i(number currency email percentage phone age
-                        url ordinal geo dimension temp datetime duration)
+                        url ordinal geo dimension temp datetime)
