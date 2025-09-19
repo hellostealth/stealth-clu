@@ -89,14 +89,39 @@ module Stealth
         # https://learn.microsoft.com/en-us/azure/ai-services/language-service/named-entity-recognition/concepts/entity-resolutions
         def entities
           return {} if raw_entities.blank?
+
           _entities = {}
 
           raw_entities.each do |entity|
             category = entity["category"]
             mapped_category = ENTITY_MAP[category] || category
 
+            values = case mapped_category.to_sym
+                    when :number, :percentage
+                      entity["resolutions"]&.map { |res| res["value"] }
+                    when :phone, :email, :url, :key_phrase, :name
+                      [entity["text"]]
+                    when :currency, :age, :dimension, :temp
+                      entity["resolutions"]&.map do |res|
+                        { "number" => res["value"], "units" => res["unit"] }
+                      end
+                    when :ordinal
+                      entity["resolutions"]&.map do |res|
+                        { "offset" => res["offset"].to_i, "relativeTo" => res["relativeTo"] }
+                      end
+                    when :geo
+                      [{ "value" => entity["text"], "type" => "location" }]
+                    when :datetime
+                      [entity]
+                    else
+                      # Fallback: return text if no resolution
+                      resolution_values = entity["resolutions"]&.map { |res| res["value"] }
+                      resolution_values.presence || [entity["text"]]
+                    end
+
+            next if values.blank?
             _entities[mapped_category.to_sym] ||= []
-            _entities[mapped_category.to_sym] << entity
+            _entities[mapped_category.to_sym].concat(values)
           end
 
           _entities
