@@ -127,14 +127,6 @@ module Stealth
           _entities
         end
 
-        # def sentiment_score
-        #   parsed_result&.dig('prediction', 'sentiment', 'score')
-        # end
-
-        # def sentiment
-        #   parsed_result&.dig('prediction', 'sentiment', 'label')&.to_sym
-        # end
-
         private
 
         def top_intent
